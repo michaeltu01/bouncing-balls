@@ -1,12 +1,11 @@
 """
 
-[INSERT CLASS DOCSTRING]
+Bouncing Balls Assignment, CSCI 2340, Fall 2024
+Author: Michael Tu (mstu)
 
-"""
+Copyright (c) 2024, Michael Tu, All Rights Reserved. CSCI 2340, Fall 2024, All Rights Reserved.
 
-"""
-
-[COPYRIGHT STATEMENT]
+Description: A bouncing balls game to pass the time.
 
 Sources:
 - Myself
@@ -16,11 +15,11 @@ Sources:
 """
 
 
+import random
 import pygame
 import sys
 import pymunk
 import math
-
 
 """
 
@@ -44,16 +43,30 @@ def create_ball(space: pymunk.Space, pos: tuple, v0: tuple, e=0.9) -> pymunk.Cir
     shape = pymunk.Circle(body, 40)
     shape.elasticity = e
     space.add(body, shape)
-    return shape
 
-def draw_balls(balls: list[pymunk.Circle], radius: int) -> None:
+    colors = { # NO WHITE!! 
+        "red": (255, 0, 0),
+        "green": (0, 255, 0),
+        "blue": (0, 0, 255),
+        "yellow": (255, 255, 0),
+        "purple": (255, 0, 255),
+        "orange": (255, 165, 0),
+        "cyan": (0, 255, 255),
+        "magenta": (255, 0, 255),
+        "black": (0, 0, 0),
+    }
+
+    color = random.choice(list(colors.values()))
+    return shape, color
+
+def draw_balls(balls: list[pymunk.Circle, tuple], radius: int) -> None:
     """
     Draw the given balls with a given radius on the pygame screen.
     """
-    for ball in balls:
+    for ball, color in balls:
         pos_x = int(ball.body.position.x)
         pos_y = int(ball.body.position.y)
-        pygame.draw.circle(screen, (0, 0, 255), (pos_x, pos_y), radius) # TODO: make color random
+        pygame.draw.circle(screen, color, (pos_x, pos_y), radius)
 
 def setup_space(width, height, e=0.9) -> pymunk.Space:
     """
@@ -87,10 +100,18 @@ def setup_space(width, height, e=0.9) -> pymunk.Space:
 
     return space
 
+def draw_button(pos: tuple, width: int, height: int, color: tuple, text: str) -> None:
+    """
+    Draw a button on the screen.
+    """
+    x, y = pos
+    rect = pygame.Rect(x, y, width, height)
+    pygame.draw.rect(screen, color, rect)
+    screen.blit(pygame.font.SysFont("Arial", 20).render(text, True, (255, 255, 255)), (width/2, height/2))
 
 """
 
-Initialize Pygame and Pymunk
+Main functionality
 
 """
 
@@ -121,9 +142,13 @@ while True:
         # Add a new ball on click
         if event.type == pygame.MOUSEBUTTONDOWN:
             balls.append(create_ball(space, event.pos, (400 * math.cos(45), 400 * math.sin(45))))
+            # if 50 <= event.pos[0] <= 300 and 50 <= event.pos[1] <= 150:
+            #     balls.append(create_ball(space, event.pos, (400 * math.cos(45), 400 * math.sin(45))))
 
+    # Update the screen
     screen.fill((255, 255, 255)) # background color
-    draw_balls(balls, RADIUS)
-    space.step(1/60)
+    # draw_button((50, 50), 250, 100, (0, 0, 255), "Add ball")
+    draw_balls(balls, RADIUS)    
+    space.step(1/60) # 120 FPS
+    clock.tick(60) # 120 FPS
     pygame.display.update()
-    clock.tick(120) # 60 FPS
