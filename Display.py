@@ -7,7 +7,7 @@ Copyright (c) 2024, Michael Tu, All Rights Reserved. CSCI 2340, Fall 2024, All R
 
 Display.py
 
-Description: This class handles the display of the bouncing balls.
+Description: Handles the display of the bouncing balls.
 
 """
 
