@@ -94,32 +94,10 @@ class PyMunkSpace:
         shape.elasticity = e
         self._space.add(body, shape)
 
-        colors = { # NO WHITE!! 
-            "red": (255, 0, 0),
-            "green": (0, 255, 0),
-            "blue": (0, 0, 255),
-            "yellow": (255, 255, 0),
-            "purple": (255, 0, 255),
-            "orange": (255, 165, 0),
-            "cyan": (0, 255, 255),
-            "magenta": (255, 0, 255),
-            "black": (0, 0, 0),
-        }
-
-        color = random.choice(list(colors.values()))
-        return shape, color
+        return shape
     
     def step(self, dt: float) -> None:
         """
         Step the PyMunk space. Interface to the PyGame function of the same name.
         """
         self._space.step(dt)
-
-    # def draw_button(pos: tuple, width: int, height: int, color: tuple, text: str) -> None:
-    #     """
-    #     Draw a button on the screen.
-    #     """
-    #     x, y = pos
-    #     rect = pygame.Rect(x, y, width, height)
-    #     pygame.draw.rect(screen, color, rect)
-    #     screen.blit(pygame.font.SysFont("Arial", 20).render(text, True, (255, 255, 255)), (width/2, height/2))

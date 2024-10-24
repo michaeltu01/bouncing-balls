@@ -24,6 +24,7 @@ import math
 from Display import PyGameDisplay, PyMunkSpace
 from ProcessMonitor import ProcessMonitor
 import queue
+from BallManager import BallManager
 
 """
 
@@ -52,8 +53,13 @@ message_queue = queue.Queue()
 monitor = ProcessMonitor(message_queue)
 monitor.populate_queue()
 
+# Initialize the BallManager
+ball_manager = BallManager(message_queue)
+
 # Main game loop
 while True:
+
+    # Handle events in the game
     for event in pygame.event.get():
         # Quit the game
         if event.type == pygame.QUIT:
@@ -61,15 +67,25 @@ while True:
             sys.exit()
         
         # Add a new ball on click
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            balls.append(space.create_ball(event.pos, (400 * math.cos(45), 400 * math.sin(45))))
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+        #     balls.append(space.create_ball(event.pos, (400 * math.cos(45), 400 * math.sin(45))))
             # if 50 <= event.pos[0] <= 300 and 50 <= event.pos[1] <= 150:
             #     balls.append(create_ball(space, event.pos, (400 * math.cos(45), 400 * math.sin(45))))
 
+    # Process the queue of messages
+    balls = BallManager.process_queue(ball_manager)
+
     # Update the screen
     screen.fill((255, 255, 255)) # background color
-    # draw_button((50, 50), 250, 100, (0, 0, 255), "Add ball")
-    screen.draw_balls(balls, RADIUS)    
+
+    # Update the balls
+    # FIXME: Fix the display functions to be compatible with Ball objects
+    space.create_balls(balls)
+    screen.draw_balls(balls, RADIUS)
+
+    # Step in time 
     space.step(1/60) # 60 FPS
     clock.tick(60) # 60 FPS
+
+    # Update the display
     pygame.display.update()
