@@ -22,6 +22,8 @@ import pygame
 import sys
 import math
 from Display import PyGameDisplay, PyMunkSpace
+from ProcessMonitor import ProcessMonitor
+import queue
 
 """
 
@@ -44,6 +46,11 @@ space = PyMunkSpace(WIN_WIDTH, WIN_HEIGHT)
 # Create the balls
 RADIUS = 40
 balls = []
+
+# Initialize the ProcessMonitor
+message_queue = queue.Queue()
+monitor = ProcessMonitor(message_queue)
+monitor.populate_queue()
 
 # Main game loop
 while True:
