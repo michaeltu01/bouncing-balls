@@ -44,4 +44,4 @@ class ProcessMonitor:
             proc_data = MessageData(username=proc['username'], cpu_percent=proc['cpu_percent'], memory_percent=proc['memory_percent'], cpu_times=proc['cpu_times'])
             self._queue.put(Message(action="add", pid=pid, data=proc_data))
         
-        print(self._queue)
+        # print(self._queue)

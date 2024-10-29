@@ -12,6 +12,8 @@ Description: Represents a ball in the simulation.
 """
 
 import math
+from util import Position
+import pymunk
 
 class Ball:
     def __init__(self, pid: int, memory_percent: float, runtime: float) -> None:
@@ -21,6 +23,8 @@ class Ball:
         self.color = self.assign_color(pid)
         self.radius = self.size(memory_percent)
         self.velocity = self.init_vel(runtime)
+        self.position: pymunk.Vec2d = None
+        self.shape: pymunk.Circle = None
 
     def assign_color(self, pid: int) -> tuple[int, int, int]:
         """
@@ -46,18 +50,34 @@ class Ball:
         blue = 0
 
         return (red, green, blue)
+    
+    def set_position(self, x: float, y: float) -> None:
+        """
+        Set the position of the ball.
+        """
+        # self.position = Position(x, y)
+        self.position = pymunk.Vec2d(x, y)
 
+    def assign_shape(self, shape: pymunk.Circle) -> None:
+        """
+        Assign the PyMunk shape to the ball.
+        """
+        self.shape = shape
+
+    # FIXME: size() is currently mocked
     def size(self, memory_percent: float) -> int:
         """
         Assign a size to the ball based on its memory percentage.
         """
         return 40
 
+    # FIXME: init_vel() is currently mocked
     def init_vel(self, runtime: float) -> tuple[float, float]:
         """
         Assign an initial velocity to the ball based on its runtime.
         """
-        return (400 * math.cos(45), 400 * math.sin(45))
+        # return (400 * math.cos(45), 400 * math.sin(45))
+        return (1, 0)
 
     def __str__(self) -> str:
         """

@@ -19,8 +19,10 @@ Sources:
 
 
 import pygame
+import pymunk
 import sys
 import math
+from Ball import Ball
 from Display import PyGameDisplay, PyMunkSpace
 from ProcessMonitor import ProcessMonitor
 import queue
@@ -33,8 +35,8 @@ Main functionality
 """
 
 # General setup
-pygame.init()
-clock = pygame.time.Clock()
+# pygame.init()
+# clock = pygame.time.Clock()
 
 # Create the display surface
 WIN_HEIGHT = 800
@@ -45,7 +47,7 @@ screen = PyGameDisplay(WIN_WIDTH, WIN_HEIGHT)
 space = PyMunkSpace(WIN_WIDTH, WIN_HEIGHT)
 
 # Create the balls
-RADIUS = 40
+# RADIUS = 40
 balls = []
 
 # Initialize the ProcessMonitor
@@ -55,6 +57,9 @@ monitor.populate_queue()
 
 # Initialize the BallManager
 ball_manager = BallManager(message_queue)
+# balls = [Ball(0, 1.0, 2.0)]
+balls = BallManager.process_queue(ball_manager)
+space.create_balls(balls)
 
 # Main game loop
 while True:
@@ -73,19 +78,19 @@ while True:
             #     balls.append(create_ball(space, event.pos, (400 * math.cos(45), 400 * math.sin(45))))
 
     # Process the queue of messages
-    balls = BallManager.process_queue(ball_manager)
+    # balls = BallManager.process_queue(ball_manager)
 
     # Update the screen
-    screen.fill((255, 255, 255)) # background color
+    screen.fill((255, 255, 255)) # background color (white)
 
     # Update the balls
     # FIXME: Fix the display functions to be compatible with Ball objects
-    space.create_balls(balls)
-    screen.draw_balls(balls, RADIUS)
+    # space.debug_draw(pymunk.SpaceDebugDrawOptions())
+    screen.draw_balls(balls)
 
     # Step in time 
     space.step(1/60) # 60 FPS
-    clock.tick(60) # 60 FPS
+    screen.clock.tick(60) # 60 FPS
 
     # Update the display
-    pygame.display.update()
+    screen.update()
