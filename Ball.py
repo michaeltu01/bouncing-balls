@@ -61,15 +61,16 @@ class Ball:
         """
         Assign a size to the ball based on its memory percentage.
         """
-        return 40
+        return int(memory_percent * 100)
+        # return 40
 
     # FIXME: init_vel() is currently mocked
     def init_vel(self, runtime: float) -> tuple[float, float]:
         """
         Assign an initial velocity to the ball based on its runtime.
         """
-        # return (400 * math.cos(45), 400 * math.sin(45))
-        return (1, 0)
+        return (runtime * 400 * math.cos(45), runtime * 400 * math.sin(45))
+        # return (1, 0)
 
     def __str__(self) -> str:
         """
