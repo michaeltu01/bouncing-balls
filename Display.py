@@ -43,26 +43,14 @@ class PyGameDisplay:
         self._screen = pygame.display.set_mode((win_width, win_height))
         self.clock = pygame.time.Clock()
 
-    # def draw_balls(self, balls: list[pymunk.Circle, tuple], radius: int) -> None:
-    #     """
-    #     Draw the given balls with a given radius on the pygame screen.
-    #     """
-    #     for ball, color in balls:
-    #         pos_x = int(ball.body.position.x)
-    #         pos_y = int(ball.body.position.y)
-    #         pygame.draw.circle(self._screen, color, (pos_x, pos_y), radius)
-
     def _draw_ball(self, ball: Ball) -> None:
         """
         Private function for drawing a single ball on the pygame screen.
 
         Throws an Exception if ball's position is None.
         """
-        if ball.position is None:
-            raise Exception(f"Ball PID {ball.pid} position is None")
         pos_x = int(ball.shape.body.position.x)
         pos_y = int(ball.shape.body.position.y)
-        # print(pos_x, pos_y)
         pygame.draw.circle(self._screen, ball.color, (pos_x, pos_y), ball.radius)
 
     def draw_balls(self, balls: list[Ball]) -> None:
@@ -125,41 +113,18 @@ class PyMunkSpace:
         space.add(bottom_side)
 
         return space
-    
-    # def create_ball(self, pos: tuple, v0: tuple, e=0.9) -> pymunk.Circle:
-    #     """
-    #     Arguments:
-    #     - pos (tuple): the position of the ball
-    #     - v0 (tuple): the initial velocity of the ball
-    #     - e (float): the elasticity of the ball
-
-    #     Create a ball in the given space.
-    #     """
-    #     body = pymunk.Body(1, 100, body_type=pymunk.Body.DYNAMIC)
-    #     body.position = pos
-    #     body.velocity = v0
-
-    #     shape = pymunk.Circle(body, 40)
-    #     shape.elasticity = e
-    #     self._space.add(body, shape)
-
-    #     return shape
 
     def _create_ball(self, ball: Ball) -> None:
         """
         Private function to create a ball in the PyMunk space.
         """
         body = pymunk.Body(1, 100, body_type=pymunk.Body.DYNAMIC)
-        if ball.position is None:
-            rand_x, rand_y = random.randint(0, self.win_width), random.randint(0, self.win_height)
-            print(f"Setting initial ball position: {rand_x}, {rand_y}")
-            ball.set_position(rand_x, rand_y)
-            body.position = pymunk.Vec2d(rand_x, rand_y)
-        else:
-            raise Exception("Ball position must be None to create a new ball")
-            # ball.set_position(rand_x, rand_y)
-        # body.position = pymunk.Vec2d(ball.position.x, ball.position.y)
-        # body.position = ball.position
+
+        # Initialize the position of the ball        
+        rand_x, rand_y = random.randint(0, self.win_width), random.randint(0, self.win_height)
+        print(f"Setting initial ball position: {rand_x}, {rand_y}")
+        body.position = pymunk.Vec2d(rand_x, rand_y)
+        
         body.velocity = ball.velocity
 
         shape = pymunk.Circle(body, ball.radius)

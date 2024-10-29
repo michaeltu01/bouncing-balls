@@ -23,7 +23,6 @@ class Ball:
         self.color = self.assign_color(pid)
         self.radius = self.size(memory_percent)
         self.velocity = self.init_vel(runtime)
-        self.position: pymunk.Vec2d = None
         self.shape: pymunk.Circle = None
 
     def assign_color(self, pid: int) -> tuple[int, int, int]:
@@ -50,13 +49,6 @@ class Ball:
         blue = 0
 
         return (red, green, blue)
-    
-    def set_position(self, x: float, y: float) -> None:
-        """
-        Set the position of the ball.
-        """
-        # self.position = Position(x, y)
-        self.position = pymunk.Vec2d(x, y)
 
     def assign_shape(self, shape: pymunk.Circle) -> None:
         """
