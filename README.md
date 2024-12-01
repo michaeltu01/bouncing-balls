@@ -1,5 +1,11 @@
 # bouncing-balls
 
+A bouncing ball simulation that visualizes the running processes on your Linux machine.
+
 ## Coding Standard
 
-- Private variables and methods should be prefixed by an underscore (e.g. `_count`)
+See [this document](coding_standard.md).
+
+## Future Features
+
+- [ ] Visualizer updates in real-time using a multi-threaded approach
